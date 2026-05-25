@@ -1,83 +1,154 @@
-===============================================================================
-                    PASS-01 MULTIMODAL VALIDATION PIPELINE                    
-===============================================================================
+# PASS-01 Multimodal Validation Pipeline
 
-DESCRIPTION
------------
-This repository contains the standardized framework for the MULTIPL/PASS-01 
-multimodal machine learning architecture. The pipeline evaluates unimodal and 
-fused computational estimators designed to predict Differential Treatment 
-Effects (DTE) and therapeutic endpoints in Pancreatic Ductal Adenocarcinoma 
-(PDAC) cohorts.
+Standardized training and validation framework for the **MULTIPL/PASS-01** multimodal machine learning architecture. This repository accompanies the manuscript and provides the experimental pipeline used to evaluate unimodal and multimodal estimators for predicting **Differential Treatment Effects (DTE)** and therapeutic endpoints in **Pancreatic Ductal Adenocarcinoma (PDAC)** cohorts.
 
+---
 
-SUPPORTED DATA MODALITIES
--------------------------
-The framework supports evaluation across four distinct data modalities:
-  [1] CLINICAL         [2] GENOMIC (DNA)   
-  [3] TRANSCRIPTOMIC (RNA)  [4] HISTOPATHOLOGY (WSI)
+## Overview
 
+The framework supports training and validation across four biomedical data modalities:
 
-===============================================================================
-                       IMPORTANT: DATA PRIVACY NOTICE                          
-===============================================================================
-CRITICAL: Raw and processed genomic/clinical cohorts from the PASS-01 trial 
-are highly protected patient data and are NOT uploaded to this repository.
-===============================================================================
+| Modality | Description |
+|---|---|
+| Clinical | Patient demographics, treatment, and clinical metadata |
+| Genomic (DNA) | DNA-derived molecular features |
+| Transcriptomic (RNA) | RNA expression and transcriptomic signatures |
+| Histopathology (WSI) | Whole-slide histopathology imaging features |
 
+The repository includes:
+- Unimodal model training
+- Early-fusion multimodal training
+- Late-fusion multimodal training
+- Independent validation workflows
 
-===============================================================================
-                          CODE REPOSITORY STRUCTURE                            
-===============================================================================
+---
 
+## Repository Structure
+
+```text
 multipl-pass01/
-|
-+-- .gitignore
-+-- README.md
-+-- environment.yml
-|
-+-- src/
-|   |
-|   +-- training/                 [PART 1: Core Training Modules]
-|   |   +-- preprocess.py
-|   |   +-- train_unimodal.py
-|   |   +-- train_early_fusion.py
-|   |   +-- train_late_fusion.py
-|   |
-|   +-- validation/               [PART 2: Independent Validation Suite]
-|       +-- validate_pipelines.py
-|
-===============================================================================
-                          ENVIRONMENT SETUP                                    
-===============================================================================
+├── .gitignore
+├── README.md
+├── environment.yml
+│
+└── src/
+    ├── training/
+    │   ├── preprocess.py
+    │   ├── train_unimodal.py
+    │   ├── train_early_fusion.py
+    │   └── train_late_fusion.py
+    │
+    └── validation/
+        └── validate_pipelines.py
+```
 
-Navigate to the validation subdirectory and build the Conda environment:
+---
 
-  cd src/validation/
-  conda env create -f environment.yml
-  conda activate TabPFN
+## Data Availability & Privacy
 
+> [!IMPORTANT]
+> Raw and processed genomic/clinical data from the PASS-01 trial are **not included** in this repository.
 
-===============================================================================
-                       CRITICAL PIPELINE EXECUTION ORDER                       
-===============================================================================
+The underlying patient cohorts contain protected clinical and molecular data and cannot be publicly distributed.
 
-Operational flow MUST follow this chronological sequence:
+This repository therefore provides:
+- The full training/validation pipeline
+- Model orchestration code
+- Experimental framework and reproducibility utilities
 
-STEP 1: MODEL TRAINING
-----------------------
-You must run the training pipeline scripts inside `src/training/` to generate 
-and freeze your model checkpoints before attempting any evaluation.
+but excludes:
+- Patient-level datasets
+- Processed feature matrices
+- Derived clinical annotations
 
-STEP 2: COHORT VALIDATION
--------------------------
-Once checkpoints exist, execute the main evaluation wrapper:
-  python src/validation/validate_pipelines.py
+---
 
-MODALITY DEPENDENCY RULES (Applies to both Training and Validation):
--------------------------------------------------------------------
-1. UNIMODAL execution MUST occur first to generate base predictions.
-2. EARLY FUSION and LATE FUSION passes can be run in any order once 
-   Unimodal baselines are established.
+## Environment Setup
 
-===============================================================================
+Create and activate the Conda environment:
+
+```bash
+conda env create -f environment.yml
+conda activate TabPFN
+```
+
+---
+
+## Pipeline Execution Order
+
+The framework is designed to be executed in the following order.
+
+### 1. Model Training
+
+Run the training scripts in `src/training/` to generate model checkpoints.
+
+Example:
+
+```bash
+python src/training/train_unimodal.py
+```
+
+Additional training scripts:
+
+```bash
+python src/training/train_early_fusion.py
+python src/training/train_late_fusion.py
+```
+
+---
+
+### 2. Validation
+
+After checkpoints have been generated, run the validation pipeline:
+
+```bash
+python src/validation/validate_pipelines.py
+```
+
+---
+
+## Modality Dependency Rules
+
+The following execution dependencies apply to both training and validation:
+
+1. **Unimodal models must be trained first**
+   - Required to establish baseline predictions
+
+2. **Fusion models depend on unimodal outputs**
+   - Early-fusion and late-fusion pipelines can be executed in any order after unimodal completion
+
+---
+
+## Methodological Notes
+
+The repository is intended to support:
+- Reproducible multimodal benchmarking
+- Comparative fusion strategy evaluation
+- Translational oncology machine learning research
+
+The implementation focuses on standardized evaluation workflows for PDAC therapeutic response modeling within the PASS-01 study framework.
+
+---
+
+## Citation
+
+If you use this repository in academic work, please cite the accompanying manuscript.
+
+```bibtex
+@article{pass01_multipl,
+  title   = {TODO},
+  author  = {TODO},
+  journal = {TODO},
+  year    = {TODO}
+}
+```
+
+---
+
+## License
+
+Specify license information here.
+
+```text
+TODO: Add license
+```
