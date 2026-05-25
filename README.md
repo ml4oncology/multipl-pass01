@@ -1,18 +1,18 @@
-# PASS-01 Multimodal Validation Pipeline
+# MULTIPL Pipeline
 
-Standardized training and validation framework for the **MULTIPL/PASS-01** multimodal machine learning architecture. This repository accompanies the manuscript and provides the experimental pipeline used to evaluate unimodal and multimodal estimators for predicting **Differential Treatment Effects (DTE)** and therapeutic endpoints in **Pancreatic Ductal Adenocarcinoma (PDAC)** cohorts.
+Standardized training and validation framework for the **MULTIPL/PASS-01** multimodal machine learning architecture. This repository accompanies the manuscript and provides the core pipeline used to train and validate unimodal and multimodal estimators for predicting **Differential Treatment Effects (DTE)** and clinical endpoints in **Pancreatic Ductal Adenocarcinoma (PDAC)** cohorts.
 
 ---
 
 ## Overview
 
-The framework supports training and validation across four biomedical data modalities:
+The framework supports training and validation across four data modalities:
 
 | Modality | Description |
 |---|---|
 | Clinical | Patient demographics, treatment, and clinical metadata |
-| Genomic (DNA) | DNA-derived molecular features |
-| Transcriptomic (RNA) | RNA expression and transcriptomic signatures |
+| Genomic (DNA) | DNA features |
+| Transcriptomic (RNA) | RNAseq expression |
 | Histopathology (WSI) | Whole-slide histopathology imaging features |
 
 The repository includes:
@@ -47,7 +47,7 @@ multipl-pass01/
 ## Data Availability & Privacy
 
 > [!IMPORTANT]
-> Raw and processed genomic/clinical data from the PASS-01 trial are **not included** in this repository.
+> Raw and processed genomic/clinical data from the COMPASS/PASS-01 trials are **not included** in this repository.
 
 The underlying patient cohorts contain protected clinical and molecular data and cannot be publicly distributed.
 
@@ -85,14 +85,14 @@ Run the training scripts in `src/training/` to generate model checkpoints.
 Example:
 
 ```bash
-python src/training/train_unimodal.py
+python src/training/unimodal.py
 ```
 
 Additional training scripts:
 
 ```bash
-python src/training/train_early_fusion.py
-python src/training/train_late_fusion.py
+python src/training/earlyfusion.py
+python src/training/latefusion.py
 ```
 
 ---
@@ -126,7 +126,7 @@ The repository is intended to support:
 - Comparative fusion strategy evaluation
 - Translational oncology machine learning research
 
-The implementation focuses on standardized evaluation workflows for PDAC therapeutic response modeling within the PASS-01 study framework.
+The implementation focuses on standardized evaluation workflows for DTE modeling within the study framework.
 
 ---
 
