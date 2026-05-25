@@ -22,8 +22,7 @@ The framework supports evaluation across four distinct data modalities:
                        IMPORTANT: DATA PRIVACY NOTICE                          
 ===============================================================================
 CRITICAL: Raw and processed genomic/clinical cohorts from the PASS-01 trial 
-are highly protected patient data. Input CSV structures must match the exact 
-feature schemas specified in your repository's onboarding manifest.
+are highly protected patient data and are NOT uploaded to this repository.
 ===============================================================================
 
 
@@ -31,19 +30,23 @@ feature schemas specified in your repository's onboarding manifest.
                           CODE REPOSITORY STRUCTURE                            
 ===============================================================================
 
-  .
-  └── src/
-      ├── training/               <-- Core Training Modules
-      │   ├── preprocess.py
-      │   ├── train_unimodal.py
-      │   ├── train_early_fusion.py
-      │   └── train_late_fusion.py
-      │
-      └── validation/             <-- Validation Deployment Suite
-          ├── environment.yml     
-          └── validate_pipelines.py
-
-
+multipl-pass01/
+|
++-- .gitignore
++-- README.md
++-- environment.yml
+|
++-- src/
+|   |
+|   +-- training/                 [PART 1: Core Training Modules]
+|   |   +-- preprocess.py
+|   |   +-- train_unimodal.py
+|   |   +-- train_early_fusion.py
+|   |   +-- train_late_fusion.py
+|   |
+|   +-- validation/               [PART 2: Independent Validation Suite]
+|       +-- validate_pipelines.py
+|
 ===============================================================================
                           ENVIRONMENT SETUP                                    
 ===============================================================================
