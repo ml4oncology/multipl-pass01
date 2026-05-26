@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from typing import Optional, List
 
-from config import RANDOM_STATES, BASE_RESULTS
+from config import RANDOM_STATES, BASE_RESULTS, DATE_STR
 
 
 def build_seed_path(
@@ -107,13 +107,11 @@ def average_oof_predictions(
 # ============================================================
 if __name__ == "__main__":
 
-    DATE_STR_UNIMODAL = "20260329"
-    DATE_STR_EF       = "20260329"
-    DATE_STR_LF       = "20260329"
+    DATE_STR_UNIMODAL = DATE_STR
+    DATE_STR_EF       = DATE_STR
+    DATE_STR_LF       = DATE_STR
 
-    # Run all tasks — comment out as needed
-    TASKS = ["prognosis", "DTE-FFX", "DTE-GNP"]
-    # TASKS = ["DTE-FFX", "DTE-GNP"]  # DTE only
+    TASKS = ["DTE-FFX", "DTE-GNP"]
 
     for TASK in TASKS:
         print(f"\n{'='*60}")

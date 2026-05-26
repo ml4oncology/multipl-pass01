@@ -1,0 +1,20 @@
+{
+  "lr": {
+    "Clinical": "../../results/DTE-FFX/Clinical/${target}/lr/20260526",
+    "DNA": "../../results/DTE-FFX/DNA/${target}/lr/20260526",
+    "RNA": "../../results/DTE-FFX/RNA/${target}/lr/20260526",
+    "Histopathology": "../../results/DTE-FFX/Histopathology/${target}/lr/20260526"
+  },
+  "xgb": {
+    "Clinical": "../../results/DTE-FFX/Clinical/${target}/xgb/20260526",
+    "DNA": "../../results/DTE-FFX/DNA/${target}/xgb/20260526",
+    "RNA": "../../results/DTE-FFX/RNA/${target}/xgb/20260526",
+    "Histopathology": "../../results/DTE-FFX/Histopathology/${target}/xgb/20260526"
+  },
+  "tabpfn": {
+    "Clinical": "../../results/DTE-FFX/Clinical/${target}/tabpfn/20260526",
+    "DNA": "../../results/DTE-FFX/DNA/${target}/tabpfn/20260526",
+    "RNA": "../../results/DTE-FFX/RNA/${target}/tabpfn/20260526",
+    "Histopathology": "../../results/DTE-FFX/Histopathology/${target}/tabpfn/20260526"
+  }
+}

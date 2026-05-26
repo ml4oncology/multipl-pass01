@@ -1,0 +1,20 @@
+{
+  "lr": {
+    "Clinical": "../../results/prognosis/Clinical/${target}/lr/20260526",
+    "DNA": "../../results/prognosis/DNA/${target}/lr/20260526",
+    "RNA": "../../results/prognosis/RNA/${target}/lr/20260526",
+    "Histopathology": "../../results/prognosis/Histopathology/${target}/lr/20260526"
+  },
+  "xgb": {
+    "Clinical": "../../results/prognosis/Clinical/${target}/xgb/20260526",
+    "DNA": "../../results/prognosis/DNA/${target}/xgb/20260526",
+    "RNA": "../../results/prognosis/RNA/${target}/xgb/20260526",
+    "Histopathology": "../../results/prognosis/Histopathology/${target}/xgb/20260526"
+  },
+  "tabpfn": {
+    "Clinical": "../../results/prognosis/Clinical/${target}/tabpfn/20260526",
+    "DNA": "../../results/prognosis/DNA/${target}/tabpfn/20260526",
+    "RNA": "../../results/prognosis/RNA/${target}/tabpfn/20260526",
+    "Histopathology": "../../results/prognosis/Histopathology/${target}/tabpfn/20260526"
+  }
+}

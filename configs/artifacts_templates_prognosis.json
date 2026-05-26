@@ -1,0 +1,6 @@
+{
+  "Clinical": "../../results/prognosis/Clinical/{target}/{model}/20260526/Clinical_{seed}_models.joblib",
+  "DNA": "../../results/prognosis/DNA/{target}/{model}/20260526/DNA_{seed}_models.joblib",
+  "RNA": "../../results/prognosis/RNA/{target}/{model}/20260526/RNA_{seed}_models.joblib",
+  "Histopathology": "../../results/prognosis/Histopathology/{target}/{model}/20260526/Histopathology_{seed}_models.joblib"
+}

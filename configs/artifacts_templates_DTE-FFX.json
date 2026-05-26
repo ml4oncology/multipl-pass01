@@ -1,0 +1,6 @@
+{
+  "Clinical": "../../results/DTE-FFX/Clinical/{target}/{model}/20260526/Clinical_{seed}_models.joblib",
+  "DNA": "../../results/DTE-FFX/DNA/{target}/{model}/20260526/DNA_{seed}_models.joblib",
+  "RNA": "../../results/DTE-FFX/RNA/{target}/{model}/20260526/RNA_{seed}_models.joblib",
+  "Histopathology": "../../results/DTE-FFX/Histopathology/{target}/{model}/20260526/Histopathology_{seed}_models.joblib"
+}

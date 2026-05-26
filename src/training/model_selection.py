@@ -19,14 +19,6 @@ UNIMODAL     = ["clinical", "rna", "dna", "histopathology"]
 TYPE_PREF    = ["lr", "xgb", "tabpfn"]
 STACKER_PREF = ["avg", "lr", "xgb", "tabpfn"]
 
-# Set csv_path to the auc_ci_summary for the task/target of interest
-csv_path = "../../results/prognosis/COMPASS_prognosis_orr_auc_ci_summary.csv"
-# csv_path = "../../results/prognosis/COMPASS_prognosis_1yOS_auc_ci_summary.csv"
-# csv_path = "../../results/DTE-FFX/COMPASS_DTE-FFX_orr_auc_ci_summary.csv"
-# csv_path = "../../results/DTE-FFX/COMPASS_DTE-FFX_1yOS_auc_ci_summary.csv"
-# csv_path = "../../results/DTE-GNP/COMPASS_DTE-GNP_orr_auc_ci_summary.csv"
-# csv_path = "../../results/DTE-GNP/COMPASS_DTE-GNP_1yOS_auc_ci_summary.csv"
-
 
 # ============================================================
 # Helpers
@@ -98,6 +90,22 @@ def best_row(g):
 # Main
 # ============================================================
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Pick best late fusion, early fusion, and unimodal models."
+    )
+    parser.add_argument(
+        "--file", "-f",
+        default="../../results/DTE-FFX/COMPASS_DTE-FFX_orr_auc_ci_summary.csv",
+        help=(
+            "Path to the auc_ci_summary CSV produced by auc_analysis.py. Examples:\n"
+            "  ../../results/DTE-FFX/COMPASS_DTE-FFX_orr_auc_ci_summary.csv\n"
+            "  ../../results/DTE-GNP/COMPASS_DTE-GNP_1yOS_auc_ci_summary.csv"
+        ),
+    )
+    args = parser.parse_args()
+    csv_path = args.file
+
     # Load
     df = pd.read_csv(csv_path)
     df[["ci_low", "ci_high"]] = df["ci95_cc"].apply(parse_ci).apply(pd.Series)

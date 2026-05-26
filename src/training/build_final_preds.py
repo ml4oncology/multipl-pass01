@@ -1,21 +1,19 @@
 from pathlib import Path
 import pandas as pd
-from config import BASE_RESULTS
+from config import BASE_RESULTS, DATE_STR
 
 # ============================================================
 # Config
 # ============================================================
-DATE_STR_UNIMODAL = "20260329"
-DATE_STR_EF       = "20260329"
-DATE_STR_LF       = "20260329"
+DATE_STR_UNIMODAL = DATE_STR
+DATE_STR_EF       = DATE_STR
+DATE_STR_LF       = DATE_STR
 
 UNIMODAL_MODS = ["Clinical", "DNA", "RNA", "Histopathology"]
 MODEL_TYPES   = ["lr", "xgb", "tabpfn"]
 LF_STACKERS   = ["avg", "lr", "xgb", "tabpfn"]
 
-# Run all tasks — comment out as needed
-TASKS   = ["prognosis", "DTE-FFX", "DTE-GNP"]
-# TASKS = ["DTE-FFX", "DTE-GNP"]  # DTE only
+TASKS = ["DTE-FFX", "DTE-GNP"]
 
 TARGETS = ["orr", "1yOS"]
 

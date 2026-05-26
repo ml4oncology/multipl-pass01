@@ -91,15 +91,26 @@ def delong_test(y_true: np.ndarray, pred_a: np.ndarray, pred_b: np.ndarray) -> f
 # Main
 # ============================================================
 if __name__ == "__main__":
+    import argparse
     np.random.seed(42)
 
-    # Set file_path to the preds CSV for the task/target of interest
-    file_path = "../../results/prognosis/COMPASS_prognosis_orr_preds.csv"
-    # file_path = "../../results/prognosis/COMPASS_prognosis_1yOS_preds.csv"
-    # file_path = "../../results/DTE-FFX/COMPASS_DTE-FFX_orr_preds.csv"
-    # file_path = "../../results/DTE-FFX/COMPASS_DTE-FFX_1yOS_preds.csv"
-    # file_path = "../../results/DTE-GNP/COMPASS_DTE-GNP_orr_preds.csv"
-    # file_path = "../../results/DTE-GNP/COMPASS_DTE-GNP_1yOS_preds.csv"
+    parser = argparse.ArgumentParser(
+        description="AUC + 95% CI summary and pairwise DeLong tests."
+    )
+    parser.add_argument(
+        "--file", "-f",
+        default="../../results/DTE-FFX/COMPASS_DTE-FFX_orr_preds.csv",
+        help=(
+            "Path to the preds CSV produced by build_final_preds.py. "
+            "Examples:\n"
+            "  ../../results/DTE-FFX/COMPASS_DTE-FFX_orr_preds.csv\n"
+            "  ../../results/DTE-FFX/COMPASS_DTE-FFX_1yOS_preds.csv\n"
+            "  ../../results/DTE-GNP/COMPASS_DTE-GNP_orr_preds.csv\n"
+            "  ../../results/DTE-GNP/COMPASS_DTE-GNP_1yOS_preds.csv"
+        ),
+    )
+    args = parser.parse_args()
+    file_path = args.file
 
     # ── Load ──────────────────────────────────────────────────────
     df = pd.read_csv(file_path)

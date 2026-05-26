@@ -4,6 +4,7 @@ PASS-01 Multimodal Validation Pipeline
 Consolidated evaluation framework for Unimodal, Early Fusion, and Late Fusion models.
 """
 
+import sys
 import json
 import logging
 import warnings
@@ -16,6 +17,12 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import roc_auc_score
 
+# Make src/training importable so joblib can unpickle models that reference
+# unimodal.py custom classes (DNAPreprocessor, _dna_summary_selector, etc.)
+_TRAINING_DIR = Path(__file__).resolve().parent.parent / "training"
+if str(_TRAINING_DIR) not in sys.path:
+    sys.path.insert(0, str(_TRAINING_DIR))
+
 # Silence unnecessary user warnings from unpickled pipelines if required
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -24,12 +31,14 @@ warnings.filterwarnings("ignore", category=UserWarning)
 # =====================================================================
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+from datetime import date
+
 BASE_RESULTS = Path("../../results")
 PRED_DIR = BASE_RESULTS / "PASS-01"
 EF_VAL_PATH = Path("../../data/processed/PASS-01/PASS01_EarlyFusion_Validation.csv")
 
 SUBJECT_COL = "Subject"
-DATASTR = "20260329"
+DATASTR = date.today().strftime("%Y%m%d")
 
 TASKS = ["DTE-FFX", "DTE-GNP"]
 TARGETS = ["orr", "1yOS"]
@@ -42,28 +51,25 @@ STACKERS = ["lr", "xgb", "tabpfn", "avg"]
 # 2. Custom Transformers / Classes (Required for unpickling)
 # =====================================================================
 class ColumnSubsetter(BaseEstimator, TransformerMixin):
+    """Subset a DataFrame to a fixed list of columns.
+    Matches the implementation in build_final_models.py for pickle compatibility.
+    """
     def __init__(self, columns: Optional[List[str]]):
         self.columns = list(columns) if columns is not None else None
-        self.columns_ = None
 
     def fit(self, X, y=None):
         if self.columns is not None:
-            if not hasattr(X, "columns"):
-                raise ValueError("ColumnSubsetter expects a pandas DataFrame as input.")
             missing = [c for c in self.columns if c not in X.columns]
             if missing:
                 raise ValueError(
                     f"[ColumnSubsetter] Missing columns: {missing[:8]}{'...' if len(missing)>8 else ''}"
                 )
-            self.columns_ = list(self.columns)
-        else:
-            self.columns_ = None
         return self
 
     def transform(self, X):
-        if self.columns_ is None:
+        if self.columns is None:
             return X
-        return X[self.columns_]
+        return X[self.columns]
 
 
 class ProbToLogitScaler(BaseEstimator, TransformerMixin):
@@ -95,6 +101,13 @@ class ProbToLogitScaler(BaseEstimator, TransformerMixin):
 import __main__
 __main__.ColumnSubsetter = ColumnSubsetter
 __main__.ProbToLogitScaler = ProbToLogitScaler
+
+# Register all unimodal custom classes/objects in __main__ so joblib can
+# unpickle FINAL models whose steps were defined in unimodal.py
+import unimodal as _unimodal_mod
+for _nm in dir(_unimodal_mod):
+    if not _nm.startswith('__'):
+        setattr(__main__, _nm, getattr(_unimodal_mod, _nm))
 
 
 # =====================================================================
@@ -166,15 +179,19 @@ def run_unimodal_validation():
                     RESULTS_DIR = BASE_RESULTS / TASK / modality / tar / mt / DATASTR
                     final_tag = f"{modality}_{tar}_{mt}_FINAL"
 
-                    model_path = RESULTS_DIR / f"{final_tag}.pkl"
-                    meta_path = RESULTS_DIR / f"{final_tag}_meta.joblib"
+                    model_path    = RESULTS_DIR / f"{final_tag}.pkl"
+                    manifest_path = RESULTS_DIR / f"{final_tag}_manifest.json"
 
                     if not model_path.exists():
                         logging.warning(f"Missing Unimodal model: {model_path}")
                         continue
+                    if not manifest_path.exists():
+                        logging.warning(f"Missing Unimodal manifest: {manifest_path}")
+                        continue
 
                     model = joblib.load(model_path)
-                    meta = joblib.load(meta_path)
+                    with open(manifest_path) as _fh:
+                        meta = json.load(_fh)
                     expected = meta.get("expected_columns")
                     if not expected:
                         raise ValueError(f"`expected_columns` missing in meta for {final_tag}")
@@ -214,11 +231,12 @@ def run_early_fusion_validation():
         X = df_.drop(columns=list(drop_cols)).reset_index(drop=True)
         return ids, X, y, labeled_mask
 
-    def columns_expected_by_ct(model) -> list[str]:
+    def columns_expected_by_ct(model) -> list:
+        """Return input columns expected by the CT step, or [] if no CT step."""
         if "ct" not in model.named_steps:
-            raise ValueError("Pipeline has no 'ct' step; unexpected fusion pipeline shape.")
+            return []   # simple pipeline — caller uses all feature columns
         ct = model.named_steps["ct"]
-        cols_in_order: list[str] = []
+        cols_in_order = []
         for name, transformer, colsel in ct.transformers_:
             if isinstance(colsel, list):
                 cols_in_order.extend(colsel)
@@ -243,7 +261,7 @@ def run_early_fusion_validation():
             )
 
             for mt in MODEL_TYPES:
-                out_dir = BASE_RESULTS / TASK / "EarlyFusion" / tar
+                out_dir = BASE_RESULTS / TASK / "EarlyFusion" / tar / mt / DATASTR
                 tag = f"EarlyFusion_{tar}_{mt}_FINAL"
                 savetag = f"EarlyFusion_{tar}_{mt}"
                 model_path = out_dir / f"{tag}.pkl"
@@ -254,7 +272,11 @@ def run_early_fusion_validation():
 
                 model = joblib.load(model_path)
                 ct_cols = columns_expected_by_ct(model)
-                X_val = align_to_ct_columns(X_raw, ct_cols)
+                if ct_cols:
+                    X_val = align_to_ct_columns(X_raw, ct_cols)
+                else:
+                    # Simple pipeline (no CT step): pass all feature columns as-is
+                    X_val = X_raw.copy()
 
                 y_prob = get_prediction_probabilities(model, X_val)
                 compute_and_log_auc(TASK, "EarlyFusion", tar, mt, y_val, y_prob, labeled_mask)
