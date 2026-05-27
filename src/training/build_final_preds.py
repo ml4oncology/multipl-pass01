@@ -137,6 +137,24 @@ def build_csv_entries(task: str, target: str, base: Path) -> list:
 # Run for all tasks and targets
 # ============================================================
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Assemble per-model OOF predictions into wide CSVs for auc_analysis.py."
+    )
+    parser.add_argument(
+        "--date", "-d", default=DATE_STR,
+        help=(
+            "Date string (YYYYMMDD) of the training run to read from. "
+            "Defaults to today. Override when training ran on a different day, e.g. --date 20260527"
+        ),
+    )
+    args = parser.parse_args()
+
+    # Override module-level date strings so build_csv_entries() picks them up
+    DATE_STR_UNIMODAL = args.date  # noqa: F811
+    DATE_STR_EF       = args.date  # noqa: F811
+    DATE_STR_LF       = args.date  # noqa: F811
+
     base = Path(BASE_RESULTS)
 
     for task in TASKS:

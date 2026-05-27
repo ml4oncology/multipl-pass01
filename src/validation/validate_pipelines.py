@@ -425,6 +425,21 @@ def run_late_fusion_validation():
 # 5. Main Execution Entry Point
 # =====================================================================
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Run PASS-01 external validation against final models."
+    )
+    parser.add_argument(
+        "--date", "-d", default=DATASTR,
+        help=(
+            "Date string (YYYYMMDD) used to locate final model files in results/. "
+            "Defaults to today. Override when build_final_models.py ran on a different day, "
+            "e.g. --date 20260527"
+        ),
+    )
+    args = parser.parse_args()
+    DATASTR = args.date  # Override module-level DATASTR used by all validation functions
+
     run_unimodal_validation()
     run_early_fusion_validation()
     run_late_fusion_validation()

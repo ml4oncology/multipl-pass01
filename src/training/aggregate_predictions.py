@@ -106,10 +106,22 @@ def average_oof_predictions(
 # Run aggregation for all tasks, modalities, targets, models
 # ============================================================
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Aggregate OOF predictions across random seeds."
+    )
+    parser.add_argument(
+        "--date", "-d", default=DATE_STR,
+        help=(
+            "Date string (YYYYMMDD) of the training run whose predictions to aggregate. "
+            "Defaults to today. Override when training ran on a different day, e.g. --date 20260527"
+        ),
+    )
+    args = parser.parse_args()
 
-    DATE_STR_UNIMODAL = DATE_STR
-    DATE_STR_EF       = DATE_STR
-    DATE_STR_LF       = DATE_STR
+    DATE_STR_UNIMODAL = args.date
+    DATE_STR_EF       = args.date
+    DATE_STR_LF       = args.date
 
     TASKS = ["DTE-FFX", "DTE-GNP"]
 

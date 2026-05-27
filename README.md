@@ -133,6 +133,8 @@ Aggregate out-of-fold predictions across seeds for each model.
 
 ```bash
 python aggregate_predictions.py
+# If training ran on a different day:
+python aggregate_predictions.py --date 20260527
 ```
 
 ### Step 5 — Build Wide Prediction Table
@@ -141,6 +143,8 @@ Merge all model predictions into a single wide CSV per task/target for AUC analy
 
 ```bash
 python build_final_preds.py
+# If training ran on a different day:
+python build_final_preds.py --date 20260527
 ```
 
 ### Step 6 — AUC + Confidence Interval Analysis (Training)
@@ -191,6 +195,8 @@ Run all final models on the PASS-01 external validation cohort. Requires Steps 1
 ```bash
 cd ../validation
 python -u validate_pipelines.py
+# If build_final_models.py ran on a different day:
+python -u validate_pipelines.py --date 20260527
 ```
 
 Per-model prediction CSVs are saved to `results/PASS-01/{task}/`.
