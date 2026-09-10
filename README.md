@@ -262,10 +262,12 @@ If you use this repository in academic work, please cite the accompanying manusc
 
 ```bibtex
 @article{pass01_multipl,
-  title   = {TODO},
-  author  = {TODO},
-  journal = {TODO},
-  year    = {TODO}
+  title   = {Multimodal Machine Learning for Predicting Outcomes in the PASS-01 Trial of Systemic Therapy for Metastatic Pancreatic Cancer},
+  author  = {Quan, Wei and Henault, David and Zhang, Amy and Jang, Gun Ho and Hasnain, Syeda Mariam and Bevacqua, Daniela and Deng, Yangqing and Flores-Figueroa, Eugenia and Ni, Kewei and Light, Nicholas and Wilson, Julie M. and Dodd, Anna and Tsang, Erica S. and King, Daniel A. and Habowski, Amber N. and Yu, Kenneth and Perez, Kimberly and Aguirre, Andrew J. and O'Reilly, Eileen M. and Wolpin, Brian M. and Pugh, Trevor J. and Tuveson, David A. and Jaffee, Elizabeth M. and Gallinger, Steven and O'Kane, Grainne and Notta, Faiyaz and Knox, Jennifer J. and Grant, Robert C.},
+  journal = {medRxiv},
+  year    = {2026},
+  doi     = {10.64898/2026.08.24.26360900},
+  url     = {https://www.medrxiv.org/content/10.64898/2026.08.24.26360900v1}
 }
 ```
 
@@ -273,4 +275,4 @@ If you use this repository in academic work, please cite the accompanying manusc
 
 ## License
 
-TODO: Add license
+This project is licensed under the MIT License. See the LICENSE file for details.
