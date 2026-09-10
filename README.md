@@ -64,7 +64,7 @@ multipl-pass01/
 ## Data Availability & Privacy
 
 > [!IMPORTANT]
-> Raw and processed genomic/clinical data from the COMPASS/PASS-01 trials are **not included** in this repository. The underlying patient cohorts contain protected clinical and molecular data and cannot be publicly distributed.
+> Raw and processed genomic/clinical data from the COMPASS/PASS-01 trials are **not included** in this repository. The underlying patient cohorts contain protected clinical and molecular data and cannot be publicly distributed. For PASS-01 Challenge, see https://hpb-research.ca
 
 This repository provides the full pipeline code but excludes patient-level datasets, processed feature matrices, and derived clinical annotations.
 
